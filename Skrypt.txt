@@ -1,0 +1,83 @@
+﻿W latach 50-tych ubiegłego wieku informatyk Donald Shell zauważył, iż algorytm sortowanie przez wstawianie pracuje bardzo efektywnie w przypadku gdy zbiór jest w dużym stopniu uporządkowany. Z kolei algorytm ten pracuje nieefektywnie w zbiorach nieuporz�dkowanych, poniewa� elementy są przesuwane w każdym obiegu o jedn� pozycj� przy wstawianiu elementu wybranego na list� uporz�dkowan�.
+
+Pomys� Shella polega� na tym, i� sortowany zbi�r dzielimy na podzbiory, kt�rych elementy s� odleg�e od siebie w sortowanym zbiorze o pewien odst�p h. Ka�dy z tych podzbior�w sortujemy algorytmem przez wstawianie. Nast�pnie odst�p zmniejszamy. Powoduje to powstanie nowych podzbior�w (b�dzie ich ju� mniej). Sortowanie powtarzamy i zn�w zmniejszamy odst�p, a� osi�gnie on warto�� 1.
+Wtedy sortujemy ju� normalnie za pomoc� Instertion Sort. Jednak�e z uwagi na wcze�niejsze obiegi sortuj�ce mamy u�atwione zadanie, poniewa� zbi�r zosta� w du�ym stopniu uporz�dkowany. Dzi�ki pocz�tkowym du�ym odst�pom elementy by�y przesuwane w zbiorze bardziej efektywnie - na du�e odleg�o�ci. W wyniku otrzymujemy najlepszy pod wzgl�dem szybko�ci czasu wykonania algorytm sortuj�cy w klasie O(n2). Algorytm ten nosi r�wnie� nazw� algorytmu sortowania przez wstawianie z malej�cym odst�pem (ang. Diminishing Increment Sort).
+
+Posortujemy metod� Shella zbi�r o�miu liczb: { 4 2 9 5 6 3 8 1 } w porz�dku rosn�cym. Zbi�r posiada osiem element�w, zatem przyjmiemy na wst�pie odst�p h r�wny 4. Taki odst�p podzieli zbi�r na 4 podzbiory, kt�rych elementy b�d� elementami zbioru wej�ciowego odleg�ymi od siebie o 4 pozycje. Ka�dy z otrzymanych podzbior�w sortujemy algorytmem sortowania przez wstawianie. Poniewa� zbiory te s� dwuelementowe, to sortowanie b�dzie polega�o na por�wnaniu pierwszego elementu podzbioru z elementem drugim i ewentualn� zamian� ich miejsc, je�li b�d� w niew�a�ciwym porz�dku.
+
+Zmniejszamy odst�p h o po�ow�, wi�c h = 2. Zbi�r podstawowy zostanie podzielony na dwa podzbiory. Ka�dy z tych podzbior�w sortujemy przez wstawianie:
+
+Zmniejszamy odst�p h o po�ow�, h = 1. Taki odst�p nie dzieli zbioru wej�ciowego na podzbiory, wi�c teraz b�dzie sortowany przez wstawianie ca�y zbi�r. Jednak algorytm sortuj�cy ma u�atwion� prac�, poniewa� dzi�ki poprzednim dw�m obiegom zbi�r zosta� cz��ciowo uporz�dkowany - elementy ma�e zbli�y�y si� do pocz�tku zbioru, a elementy du�e do ko�ca.
+
+Kluczowym elementem wp�ywaj�cym na efektywno�� sortowania metod� Shella jest w�a�ciwy dob�r ci�gu odst�p�w. Okazuje si�, i� ci�g zaproponowany przez tw�rc� algorytmu jest jednym z najgorszych, poniewa� w kolejnych podzbiorach uczestnicz� wielokrotnie te same elementy.
+Dot�d problem optymalnych odst�p�w w algorytmie sortowania metod� Shella nie zosta� rozwi�zany matematycznie, poniewa� w og�lnym przypadku jest niezwykle trudny. Wielu badaczy proponowa�o na wyb�r tych odst�p�w r�ne ci�gi liczbowe otrzymuj�c lepsze lub gorsze rezultaty.
+
+Je�li N jest pot�ga dw�jki, to sortowanie z oryginalnym ci�giem odst�p�w zaproponowanym przez Shella wykonuje w najgorszym przypadku O( N^2 ) por�wna�. Przypadek ten zachodzi na przyk�ad wtedy, gdy elementy wi�ksze i mniejsze od mediany zajmuj� odpowiednio parzyste i nieparzyste pozycje tablicy, poniewa� s� one por�wnywane dopiero w ostatnim przebiegu.
+Wersja zaproponowana przez Pratta ma wprawdzie wy�sz� z�o�ono�� ni� optymalne dla algorytm�w sortowania opartych na por�wnaniach O(N log �N) , ale za to prowadzi do sieci sortuj�cej o liczbie komparator�w tego samego rz�du, co sie� Batchera.
+Zauwa�ono, �e �rednio najmniej por�wna� element�w potrzeba, gdy ilorazy kolejnych odst�p�w le�� mniej wi�cej pomi�dzy 2,2 a 2,3. Dlatego ci�gi Gonneta i Baezy-Yatesa o ilorazie 2,2 i Tokudy o ilorazie 2,25 sprawdzaj� si� w praktyce. Nie wiadomo jednak, dlaczego minimum przypada w�a�nie w tym miejscu. Zalecane jest te� stosowanie odst�p�w o niskich najwi�kszych wsp�lnych dzielnikach lub parami wzgl�dnie pierwszych.
+Pod wzgl�dem �redniej liczby por�wna� element�w najlepsze znane ci�gi odst�p�w to ci�g 1, 4, 10, 23, 57, 132, 301, 701 i podobne, o wyrazach znalezionych do�wiadczalnie. Dalsze wyrazy optymalnych ci�g�w pozostaj� nieznane. Do dobrych wynik�w prowadzi przed�u�enie ich zgodnie ze wzorem rekurencyjnym h k = � 2,25 h_k � 1 � .
+Do zastosowa� praktycznych mo�na te� poleci� ci�g Tokudy, okre�lony prostymi wzorami h_k = � h_k� � , gdzie h_k� = 2 , 25 h_k � 1� + 1 , h1� = 1.
+
+Na pocz�tku dzia�ania algorytmu ustalany jest przedzia� warto�ci, kt�re zale�� od warto�ci wszystkich element�w w sekwencji, kt�ra ma by� posortowana. Dla przyk�adu, sekwencja v liczb ca�kowitych [100, 2, 0, 150, 2, 3, 0] tworzy przedzia� [min(v), max(v)] = [0, 150] wynosz�cy ��cznie 151 element�w; z kolei v' o warto�ciach [15, 6, 11, 10] tworzy przedzia� [6, 15] z dziesi�cioma elementami. W momencie, gdy przedzia� nie jest znany, mo�na pos�u�y� si� minimalnymi i maksymalnymi warto�ciami typ�w element�w w v (np. dla sekwencji, gdzie ka�dy element ma typ unsigned char (8 bit�w) jest to [0, 255])
+
+Dla ka�dego elementu z utworzonego przedzia�u obliczana jest ilo�� jego wyst�pie� w wej�ciowej sekwencji v, tzn. tworzony jest histogram (ile razy wyst�puje dana liczba) dla element�w sekwencji wej�ciowej. Na podstawie utworzonego histogramu generowana jest sekwencja wyj�ciowa, czyli posortowane elementy. Generowanie polega na iteracji po kolejnym elemencie w histogramie (kt�ry r�wnie� jest sekwencj�) oraz po��czenia ze sob� do sekwencji wynikowej, tymczasowej sekwencji tylu element�w o danej warto�ci ile wskazuje histogram dla danego elementu. Pocz�tkowa sekwencja wynikowa jest pusta.
+
+Sortowanie przez zliczanie mo�na rozumie� jako z�o�enie dw�ch funkcji, h generuj�cej histogram, oraz g generuj�cej sekwencj� wyj�ciow� na podstawie histogramu: g(h(v)). Z�o�enie w wyniku daje posortowan� sekwencj� element�w wej�ciowych. Przyk�ad:
+
+
+
+Pomys� takiego sortowania podali po raz pierwszy w roku 1956 E. J. Issac i R. C. Singleton
+Jest to niezwykle ciekawy algorytm, ze wzgl�du na swoj� efektywno��. Sortowanie kube�kowe, radzi sobie najlepiej ze zbiorami o du�ej ilo�ci element�w, lecz ma�ym zakresie warto�ci. W przypadku zbioru stosunkowo ma�ym zakresie, i du�ej ilo�ci element�w, algorytm ten b�dzie niezwykle efektywny, d���c do optymistycznej z�o�ono�ci O(n).
+Niestety w pesymistycznym przypadku, ma on z�o�ono�� rz�du O(n2), czyli tak� jak chocia�by nies�awne sortowanie b�belkowe
+
+Na pocz�tku za�o�enia:
+liczby do posortowania znajduj� si� w przedziale [0, 2000 000 000)
+liczby s� r�wnomiernie roz�o�one
+dla n liczb tworzymy n kube�k�w
+W pierwszej kolejno�ci wyznaczamy d�ugo�� przedzia�u pojedynczego kube�ka:
+p
+=
+2000000000
+/
+n
+p=2000000000/n
+Dla u�atwienia, sortowa� b�dziemy 10 liczb, zatem
+p
+=
+2000000000
+/
+10
+=
+200000000
+p=2000000000/10=200000000
+Poszczeg�lne kube�ki b�d� reprezentowa� nast�puj�ce przedzia�y:
+[0, 200 000 000)
+[200 000 000, 400 000 000)
+[400 000 000, 600 000 000)
+[600 000 000, 800 000 000)
+[800 000 000, 1000 000 000)
+[1000 000 000, 1200 000 000)
+[1200 000 000, 1400 000 000)
+[1400 000 000, 1600 000 000)
+[1600 000 000, 1800 000 000)
+[1800 000 000, 2000 000 000)
+Sortowa� b�dziemy zbi�r dziesi�ciu liczb ca�kowitych:
+300 000 000, 2399, 900 000 000, 1899 999 999, 500 000 001, 1400 200 000, 1799 999 999, 123 456 678, 1999 999 999, 1210 000 000
+Ka�d� z tych liczb wk�adamy do odpowiedniego kube�ka:
+[0, 200 000 000): 2399, 123 456 678, 
+[200 000 000, 400 000 000): 300 000 000,
+[400 000 000, 600 000 000): 500 000 001,
+[600 000 000, 800 000 000)
+[800 000 000, 1000 000 000): 900 000 000
+[1000 000 000, 1200 000 000)
+[1200 000 000, 1400 000 000): 1210 000 000
+[1400 000 000, 1600 000 000):  1400 200 000,
+[1600 000 000, 1800 000 000): 1799 999 999,
+[1800 000 000, 2000 000 000): 1899 999 999, 1999 999 999
+Nast�pnie przegl�damy ka�dy kube�ek i je�li jest w nim wi�cej ni� jeden element, wykonujemy sortowanie dowolnym algorytmem. Zauwa�my, �e liczby s� r�wnomiernie roz�o�one, co za tym idzie, ka�dy kube�ek b�dzie mia� co najwy�ej kilka element�w. Do posortowania takiego kube�ka wystarczy niewielka liczba operacji (za��my k operacji), zatem z�o�ono�� b�dzie ca�y czas liniowa. 
+Ostatecznie przechodzimy przez kolejne kube�ki i wypisujemy liczby w kolejno�ci napotkania.
+
+2+Sortowanie odbywa si� w miejscu potrzebujemy tylko kube�kow
+2- Czyli najwieksza i najmniejsza liczbe w zakresie
+
+
